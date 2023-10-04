@@ -1,0 +1,12 @@
+2022-03-15 15:30:26.575 [INFO ] [openhab.event.ItemStateChangedEvent ] - Item 'MyLastSeen1' changed from 2022-03-15T15:28:36.902+0100 to 2022-03-15T15:29:36.891+0100
+2022-03-15 15:30:31.375 [INFO ] [openhab.event.ConfigStatusInfoEvent ] - ConfigStatusInfo [configStatusMessages=[]]
+2022-03-15 15:30:34.602 [INFO ] [openhab.event.ItemStateChangedEvent ] - Item 'MyLastSeen2' changed from 2022-03-15T15:30:17.975+0100 to 2022-03-15T15:30:34.580+0100
+2022-03-15 15:30:34.613 [INFO ] [openhab.event.ItemStateChangedEvent ] - Item 'MyLastSeen1' changed from 2022-03-15T15:30:17.986+0100 to 2022-03-15T15:30:34.595+0100
+2022-03-15 15:30:37.446 [INFO ] [hab.event.GroupItemStateChangedEvent] - Item 'gPower' changed from 916.7 to 823.5 through MyPower1
+2022-03-15 15:30:37.448 [INFO ] [openhab.event.ItemStateChangedEvent ] - Item 'MyPower1' changed from 183.3 to 90.1
+2022-03-15 15:30:38.445 [INFO ] [openhab.event.ItemStateChangedEvent ] - Item 'MyPower1' changed from 90.1 to 158.1
+2022-03-15 15:30:38.447 [INFO ] [hab.event.GroupItemStateChangedEvent] - Item 'gPower' changed from 823.5 to 891.5 through MyPower2
+2022-03-15 15:30:39.525 [INFO ] [openhab.event.ItemStateChangedEvent ] - Item 'MyPower2' changed from 158.1 to 304.9
+2022-03-15 15:30:39.527 [INFO ] [hab.event.GroupItemStateChangedEvent] - Item 'gPower' changed from 891.5 to 1038.3 through MyPower2
+2022-03-15 15:30:40.645 [INFO ] [openhab.event.ItemStateChangedEvent ] - Item 'MyPower2' changed from 304.9 to 168.5
+2022-03-15 15:30:40.646 [INFO ] [hab.event.GroupItemStateChangedEvent] - Item 'gPower' changed from 1038.3 to 901.9 through MyPower2
