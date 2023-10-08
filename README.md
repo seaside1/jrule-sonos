@@ -11,6 +11,7 @@ Utilizing JRule for generating items and rules automatically.
 - Sonos Speakers with the Sonos S2 firmware (S1 is not compatible with the Sonos AudioClip websocket api)
 - Sonos openHAB binding installed and set up https://www.openhab.org/addons/bindings/sonos/
 - JRule with Dynamic rules support (Sharp version will be released later see PR: https://github.com/seaside1/jrule/pull/177
+- Proper network setup: Static ip numbers for Sonos speakers or DHCP ip reservations. Able to connect to the Sonos Speakers on port 1443/tcp from the openHAB instance.
 
 ## Installation
 - Copy pre-released Jrule-jar https://github.com/seaside1/jrule/releases/tag/jrule-4.x.x-BETA19-pre-release to your openHAB addons folder https://www.openhab.org/docs/configuration/addons.html#through-manually-provided-add-ons
