@@ -23,8 +23,9 @@ JRule will generate rules, which will trigger when an uri item is changed it wil
 
 ## Example
 These are generated from my system with speakers with Ip 10.0.40.xx
-![image](https://github.com/seaside1/jrule-sonos/assets/24649305/2826ed58-bcd8-4bff-9832-0d7d408e2a7e)
-![image](https://github.com/seaside1/jrule-sonos/assets/24649305/90b35969-1e0e-4c70-a0cb-2506b699748b)
+
+![Screenshot from 2023-10-08 21-34-35](https://github.com/seaside1/jrule-sonos/assets/24649305/2d8ec4b9-1540-4188-8e7d-d6c941bb078f)
+
 
 
 ```
