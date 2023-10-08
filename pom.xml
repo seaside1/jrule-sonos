@@ -28,7 +28,26 @@
             <scope>system</scope>
             <systemPath>${basedir}/jar/jrule.jar</systemPath>
         </dependency>
- <dependency>
+<!--dependency>
+    <groupId>org.eclipse.jetty.websocket</groupId>
+    <artifactId>websocket-client</artifactId>
+    <version>9.4.52.v20230823</version>
+    <scope>compile</scope>
+</dependency>
+<dependency>
+    <groupId>org.eclipse.jetty</groupId>
+    <artifactId>jetty-client</artifactId>
+    <version>9.4.52.v20230823</version>
+    <scope>compile</scope>
+</dependency>
+<dependency>
+    <groupId>org.eclipse.jetty</groupId>
+    <artifactId>jetty-util</artifactId>
+    <version>9.4.52.v20230823</version>
+    <scope>compile</scope>
+</dependency-->
+
+    <dependency>
       <groupId>org.openhab.core.bom</groupId>
       <artifactId>org.openhab.core.bom.compile</artifactId>
       <type>pom</type>
@@ -66,6 +85,16 @@
     </dependencies>
 
     <build>
+  <resources>
+        <resource>
+            <filtering>false</filtering>
+            <directory>lib</directory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+        </resource>
+    </resources>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -74,9 +103,6 @@
                 <configuration>
                     <source>17</source>
                     <target>17</target>
-                    <compilerArgs>
-                        <arg>--enable-preview</arg>
-                    </compilerArgs>
                 </configuration>
             </plugin>
             <plugin>
@@ -86,6 +112,46 @@
                 <configuration>
                     <argLine>--enable-preview</argLine>
                 </configuration>
+            </plugin>
+
+
+ <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+ <filters>
+                    <filter>
+                        <artifact>*:*</artifact>
+                        <excludes>
+                            <exclude>META-INF/*.SF</exclude>
+                            <exclude>META-INF/*.DSA</exclude>
+                            <exclude>META-INF/*.RSA</exclude>
+                        </excludes>
+                    </filter>
+                </filters>
+                            <artifactSet>
+                                <includes>
+                                   <include>org.eclipse.jetty.websocket:websocket-client</include>
+                                   <include>org.eclipse.jetty.websocket:websocket-common</include>
+                                   <include>org.eclipse.jetty.websocket:websocket-api</include>
+                                   <include>org.eclipse.jetty:jetty-util</include>
+				   <include>org.eclipse.jetty:jetty-client</include>
+                                   <include>org.eclipse.jetty:jetty-io</include>
+                                   <include>org.eclipse.jetty:jetty-http</include>
+	                           <include>com.google.code.gson:gson</include>
+                               </includes>
+     
+                            </artifactSet>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
