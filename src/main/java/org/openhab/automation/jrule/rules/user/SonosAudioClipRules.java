@@ -6,8 +6,7 @@ import org.openhab.automation.jrule.rules.event.JRuleItemEvent;
 
 public class SonosAudioClipRules extends JRule {
 
-    private static final String DEFAULT_VOLUME = "35";
-
+  
     public SonosAudioClipRules() {
         super(false);
     }
@@ -21,13 +20,14 @@ public class SonosAudioClipRules extends JRule {
             return;
         }
         final SonosDeviceInfo deviceInfo = SonosCoordinator.get().getDeviceInfo(event.getItem().getName());
-        final JRuleNumberItem volumeItem = JRuleNumberItem.forName(deviceInfo.getVolumeItemName());
-        String volumeStateString = volumeItem != null && volumeItem.getState() != null ? volumeItem.getState().stringValue() : null;
-        String volume = volumeStateString == null || volumeStateString.isEmpty() ? DEFAULT_VOLUME : volumeStateString;
+     
+        
+        
         String uri = event.getState().stringValue();
         String udn = deviceInfo.getUdn();
+        final String volume =  SonosCoordinator.get().getVolume(deviceInfo);
         logInfo("Sending Play Clip ip: {} uri: {} udn: {} volume: {}", ip, uri, udn, volume);
-        SonosCoordinator.get().playAudioClip(deviceInfo.getIp(), uri, udn, volume);
+        SonosCoordinator.get().playAudioClip(deviceInfo, uri, volume);
     }
     
 }

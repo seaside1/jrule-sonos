@@ -6,10 +6,12 @@ public class SonosDeviceInfo {
     private final String uriItemName;
     private final String volumeItemName;
     private final String udn;
+    private final String label;
 
-    public SonosDeviceInfo(String ip, String udn) {
+    public SonosDeviceInfo(String ip, String udn, String label) {
         this.ip = ip;
         this.udn = udn;
+        this.label = label;
         uriItemName = getUriItemNameFromIp(ip);
         volumeItemName = getVolumeItemNameFromIp(ip);
     }
@@ -28,11 +30,20 @@ public class SonosDeviceInfo {
     public String getUriItemName() {
         return uriItemName;
     }
+    
+    public String getAudioSinkName() {
+        return "jsas:" + udn;
+    }
+    
     public String getUdn() {
         return udn;
     }
 
     public String getVolumeItemName() {
         return volumeItemName;
+    }
+
+    public String getLabel() {
+        return label;
     }
 }
