@@ -21,6 +21,7 @@ Utilizing JRule for generating items and rules automatically.
 This addon will search of all sonos things in openHAB. Once the things have been located the ip-number and udn (Unique Device Number) for that thing will be read.
 JRule will then create Two items per IP/UDN combo: An UriItem and a volumeItem.
 JRule will generate rules, which will trigger when an uri item is changed it will attempt to play that uri as a AudioClip on the local websocket using the volume item.
+JRule will also register audio sinks for all speakers. Enabling you to use openHAB "say()" and using the overlay functionality with the sonos speaker.
 
 ## Example
 These are generated from my system with speakers with Ip 10.0.40.xx
@@ -42,4 +43,17 @@ Command has been sent successfully.
 2023-10-08 21:29:42.274 [INFO ] [utomation.jrule.sonos.SonosWebSocket] - Got connect: WebSocketSession[websocket=JettyAnnotatedEventDriver[org.openhab.automation.jrule.sonos.SonosWebSocket@2ddf1f8],behavior=CLIENT,connection=WebSocketClientConnection@195aeb7c::DecryptedEndPoint@126b11e2{l=/10.0.40.30:43584,r=/10.0.40.68:1443,OPEN,fill=-,flush=-,to=6/300000},remote=WebSocketRemoteEndpoint@34613f0c[batching=true],incoming=JettyAnnotatedEventDriver[org.openhab.automation.jrule.sonos.SonosWebSocket@2ddf1f8],outgoing=ExtensionStack[queueSize=0,extensions=[],incoming=org.eclipse.jetty.websocket.common.WebSocketSession,outgoing=org.eclipse.jetty.websocket.client.io.WebSocketClientConnection]]
 2023-10-08 21:29:42.274 [INFO ] [utomation.jrule.sonos.SonosWebSocket] - Connection status code: 101 reason: Switching Protocols
 2023-10-08 21:29:42.297 [INFO ] [utomation.jrule.sonos.SonosWebSocket] - Connection closed: 1000 - null
+```
+
+## Audio Sink
+```
+2023-11-23 22:27:09.259 [INFO ] [openhab.automation.jrule.rules.JRule] - [SonosLan] Registering Sonos Audio sink for overlay: jsas:RINCON_C438XXXXXXXXXXXXXX Sonos Move 2 
+2023-11-23 22:27:09.261 [INFO ] [openhab.automation.jrule.rules.JRule] - [SonosLan] Registering Sonos Audio sink for overlay: jsas:RINCON_000EXXXXXXXXXXXXXX Sonos Play:3 
+2023-11-23 22:27:09.262 [INFO ] [openhab.automation.jrule.rules.JRule] - [SonosLan] Registering Sonos Audio sink for overlay: jsas:RINCON_XXXXXXXXXXXXXXXXXX Sonos Play:3
+```
+```
+  say(message, "myvoiceId", "jsas:RINCON_C438XXXXXXXXXXXXXX", 60);
+```
+
+
 ```
