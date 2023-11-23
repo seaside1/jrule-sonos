@@ -48,12 +48,19 @@ Command has been sent successfully.
 ## Audio Sink
 ```
 2023-11-23 22:27:09.259 [INFO ] [openhab.automation.jrule.rules.JRule] - [SonosLan] Registering Sonos Audio sink for overlay: jsas:RINCON_C438XXXXXXXXXXXXXX Sonos Move 2 
-2023-11-23 22:27:09.261 [INFO ] [openhab.automation.jrule.rules.JRule] - [SonosLan] Registering Sonos Audio sink for overlay: jsas:RINCON_000EXXXXXXXXXXXXXX Sonos Play:3 
-2023-11-23 22:27:09.262 [INFO ] [openhab.automation.jrule.rules.JRule] - [SonosLan] Registering Sonos Audio sink for overlay: jsas:RINCON_XXXXXXXXXXXXXXXXXX Sonos Play:3
 ```
+
 ```
   say(message, "myvoiceId", "jsas:RINCON_C438XXXXXXXXXXXXXX", 60);
 ```
 
 
+# Karaf
+```
+openhab> openhab:audio sinks
+  Sonos Move 2 (Move 2) (jsas:RINCON_XXXXXXXXXXXXXXXXXX)
+  Sonos Move 2 (Move 2) (sonos:zoneplayer:RINCON_XXXXXXXXXXXXXXXXXXXX)
+  System Speaker (enhancedjavasound)
+  Web Audio (webaudio)
+openhab>
 ```
