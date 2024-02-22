@@ -1,6 +1,5 @@
 package org.openhab.automation.jrule.rules.user;
 
-import org.openhab.automation.jrule.items.JRuleNumberItem;
 import org.openhab.automation.jrule.rules.JRule;
 import org.openhab.automation.jrule.rules.event.JRuleItemEvent;
 
@@ -20,9 +19,6 @@ public class SonosAudioClipRules extends JRule {
             return;
         }
         final SonosDeviceInfo deviceInfo = SonosCoordinator.get().getDeviceInfo(event.getItem().getName());
-     
-        
-        
         String uri = event.getState().stringValue();
         String udn = deviceInfo.getUdn();
         final String volume =  SonosCoordinator.get().getVolume(deviceInfo);

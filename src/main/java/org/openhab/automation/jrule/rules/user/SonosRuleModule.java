@@ -3,12 +3,9 @@ package org.openhab.automation.jrule.rules.user;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Hashtable;
-import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.openhab.automation.jrule.internal.engine.JRuleEngine;
-import org.openhab.automation.jrule.internal.handler.JRuleHandler;
 import org.openhab.automation.jrule.internal.handler.JRuleItemHandler;
 import org.openhab.automation.jrule.internal.handler.JRuleThingHandler;
 import org.openhab.automation.jrule.internal.handler.JRuleTransformationHandler;
@@ -16,13 +13,11 @@ import org.openhab.automation.jrule.internal.handler.JRuleVoiceHandler;
 import org.openhab.automation.jrule.rules.JRule;
 import org.openhab.core.audio.AudioSink;
 import org.openhab.core.thing.Thing;
-import org.osgi.framework.ServiceRegistration;
 
 public class SonosRuleModule extends JRule {
 
     private static final String RULE_METHOD_NAME = "fireAudioClip";
     private static final int DEFAULT_VOLUME = 35;
-    private final Map<String, ServiceRegistration<AudioSink>> audioSinkRegistrations = new ConcurrentHashMap<>();
 
     public SonosRuleModule() {
         fetchSonosThingAttributes();

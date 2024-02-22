@@ -2,6 +2,7 @@ package org.openhab.automation.jrule.rules.user;
 
 public class SonosDeviceInfo {
 
+    private static final String JSAS = "Jsas ";
     private final String ip;
     private final String uriItemName;
     private final String volumeItemName;
@@ -11,7 +12,7 @@ public class SonosDeviceInfo {
     public SonosDeviceInfo(String ip, String udn, String label) {
         this.ip = ip;
         this.udn = udn;
-        this.label = label;
+        this.label = JSAS.concat(label);
         uriItemName = getUriItemNameFromIp(ip);
         volumeItemName = getVolumeItemNameFromIp(ip);
     }
