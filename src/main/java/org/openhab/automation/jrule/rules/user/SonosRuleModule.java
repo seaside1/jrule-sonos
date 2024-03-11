@@ -1,9 +1,6 @@
 package org.openhab.automation.jrule.rules.user;
 
-import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.Hashtable;
-import java.util.Optional;
 
 import org.openhab.automation.jrule.internal.engine.JRuleEngine;
 import org.openhab.automation.jrule.internal.handler.JRuleItemHandler;
@@ -16,10 +13,11 @@ import org.openhab.core.thing.Thing;
 
 public class SonosRuleModule extends JRule {
 
-    private static final String RULE_METHOD_NAME = "fireAudioClip";
     private static final int DEFAULT_VOLUME = 35;
-
+    private final SonosAudioClipRules sonosAudioClipRules;
+    
     public SonosRuleModule() {
+        sonosAudioClipRules = new SonosAudioClipRules();
         fetchSonosThingAttributes();
         registerItems();
         registerRules();
@@ -38,17 +36,7 @@ public class SonosRuleModule extends JRule {
 
     private void registerRules() {
         logInfo("Registering Sonos Dynamic JRules");
-        SonosAudioClipRules jRule = new SonosAudioClipRules();
-        Method ruleMethod = null;
-        Optional<Method> methodOpt = Arrays.stream(jRule.getClass().getDeclaredMethods())
-                .filter(m -> m.getName().equals(RULE_METHOD_NAME)).findAny();
-        if (methodOpt.isEmpty()) {
-            logError("Failed to find method: {}", RULE_METHOD_NAME);
-            return;
-        }
-        ruleMethod = methodOpt.get();
-        JRuleEngine.get().addDynamicWhenReceivedCommand(ruleMethod, jRule, "SonosFireAudioClip",
-                SonosCoordinator.get().getUriItemNames());
+        JRuleEngine.get().createJRuleBuilder("SonosFireAudioClip", sonosAudioClipRules);
     }
 
     private void registerItems() {
