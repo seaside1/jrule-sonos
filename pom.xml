@@ -28,6 +28,20 @@
             <scope>system</scope>
             <systemPath>${basedir}/jar/jrule.jar</systemPath>
         </dependency>
+           <dependency>
+      <version>1.2.9</version>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-core</artifactId>
+      <scope>test</scope>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <version>1.2.9</version>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <scope>test</scope>
+      <optional>true</optional>
+    </dependency>
 <!--dependency>
     <groupId>org.eclipse.jetty.websocket</groupId>
     <artifactId>websocket-client</artifactId>

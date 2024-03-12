@@ -87,7 +87,7 @@ public class SonosWebSocket {
         String frameString = new String(bytes, UTF_8);
         logger.debug("Got Frame: {}", frameString);
         if (frameString.contains("audioClip:1")) {
-            propertyChangeSupport.firePropertyChange(SonosWebSocket.PROPERTY_SOCKET_AUDIOCLIP_RESPONSE, false, true);
+            propertyChangeSupport.firePropertyChange(SonosWebSocket.PROPERTY_SOCKET_AUDIOCLIP_RESPONSE, null, frameString);
         }
     }
 

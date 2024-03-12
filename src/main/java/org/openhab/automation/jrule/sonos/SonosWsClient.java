@@ -32,6 +32,8 @@ public class SonosWsClient implements PropertyChangeListener {
 
     private static final String JSON_X = "[{}, {}]";
     private static final String JSON_AUDIO = "[{\"namespace\": \"audioClip:1\", \"command\": \"loadAudioClip\", \"playerId\": \"{}\"}, {\"name\": \"Sonos Websocket\", \"appId\": \"org.openhab.jrule.sonos\", \"streamUrl\": \"{}\", \"volume\": {}}]";
+    private static final String JSON_CANCEL = "[{\"namespace\": \"audioClip:1\", \"command\": \"cancelAudioClip\", \"playerId\": \"{}\"}, {\"name\": \"Sonos Websocket\", \"appId\": \"org.openhab.jrule.sonos\", \"streamUrl\": \"{}\", \"volume\": {}}]";
+  //  {"id":"8","name":"song","appId":"myAppId","priority":"HIGH","clipType":"CUSTOM"}
     private static final int SUCCESS_STATUS_SWITCHING_PROTOCOL = 101;
     private static final long SLEEP_TIME = 10;
 
