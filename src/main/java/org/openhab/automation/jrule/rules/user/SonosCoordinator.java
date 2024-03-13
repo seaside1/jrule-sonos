@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.openhab.automation.jrule.items.JRuleNumberItem;
 import org.openhab.automation.jrule.sonos.SonosWsClient;
@@ -11,8 +13,10 @@ import org.openhab.automation.jrule.sonos.SonosWsClient;
 public class SonosCoordinator {
 
     private static SonosCoordinator instance = null;
-
-    private Map<String, SonosDeviceInfo> uriItemNameToDeviceInfo = new HashMap<>();
+    private static final String SONOS_ID_REGEX = "\\bSonos_([A-Z0-9_]+)\\b";
+    private static final Pattern SONOS_ID_PATTERN = Pattern.compile(SONOS_ID_REGEX);
+   
+    private Map<String, SonosDeviceInfo> udnToDeviceInfo = new HashMap<>();
     private final SonosWsClient sonosWsClient;
     private static final String DEFAULT_VOLUME = "35";
 
@@ -21,26 +25,36 @@ public class SonosCoordinator {
     }
 
     public Collection<SonosDeviceInfo> getDeviceInfos() {
-        return uriItemNameToDeviceInfo.values();
+        return udnToDeviceInfo.values();
     }
 
+    public  String extractSonosId(String itemName) {
+        Matcher matcher = SONOS_ID_PATTERN.matcher(itemName);    
+        return matcher.find() ? matcher.group(1) : null;
+    }
+    
     public static SonosCoordinator get() {
         if (instance == null) {
             instance = new SonosCoordinator();
         }
         return instance;
     }
-
-    public String getIpFromUriItem(String itemName) {
-        return uriItemNameToDeviceInfo.get(itemName).getIp();
+ 
+    
+    public SonosDeviceInfo getDeviceInfoFromItem(String itemName) {
+        return udnToDeviceInfo.get(extractSonosId(itemName));
+    }
+    
+    public String getIpFromItem(String itemName) {
+        return udnToDeviceInfo.get(extractSonosId(itemName)).getIp();
     }
 
     public void addDeviInfo(SonosDeviceInfo deviceInfo) {
-        uriItemNameToDeviceInfo.put(deviceInfo.getUriItemName(), deviceInfo);
+        udnToDeviceInfo.put(deviceInfo.getUdn(), deviceInfo);
     }
 
     public List<String> getUriItemNames() {
-        return uriItemNameToDeviceInfo.values().stream().map(d -> d.getUriItemName()).toList();
+        return udnToDeviceInfo.values().stream().map(d -> d.getUriItemName()).toList();
     }
 
     public synchronized void playAudioClip(String ip, String uri, String udn, String volume) {
@@ -60,7 +74,13 @@ public class SonosCoordinator {
     }
 
     
-    public SonosDeviceInfo getDeviceInfo(String uriItemName) {
-        return uriItemNameToDeviceInfo.get(uriItemName);
+    public void cancelLastAudioClip(String sonosDeviceIp, String udn, String lastAudioClipId) {
+        sonosWsClient.connect(sonosDeviceIp);
+        sonosWsClient.cancelAudioClip(udn, lastAudioClipId);
+        sonosWsClient.disconnect(); 
+    }
+
+    public SonosDeviceInfo getDeviceInfoFromUdn(String udn) {
+        return udnToDeviceInfo.get(udn);
     }
 }

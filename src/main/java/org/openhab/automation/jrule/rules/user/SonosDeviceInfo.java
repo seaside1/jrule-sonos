@@ -2,27 +2,37 @@ package org.openhab.automation.jrule.rules.user;
 
 public class SonosDeviceInfo {
 
+    
     private static final String JSAS = "Jsas ";
     private final String ip;
     private final String uriItemName;
     private final String volumeItemName;
+    private final String cancelAudioClipName;
     private final String udn;
     private final String label;
+    private volatile String lastAudioClipId = null;
 
     public SonosDeviceInfo(String ip, String udn, String label) {
         this.ip = ip;
         this.udn = udn;
         this.label = JSAS.concat(label);
-        uriItemName = getUriItemNameFromIp(ip);
-        volumeItemName = getVolumeItemNameFromIp(ip);
+        uriItemName = getUriItemNameFromUdn(udn);
+        volumeItemName = getVolumeItemNameFromUdn(udn);
+        cancelAudioClipName = getCanelAudioClipItemNameFromUdn(udn);
     }
     
-    public String getUriItemNameFromIp(String ip) {
-        return "Sonos_" + ip.replaceAll("\\.", "") + "_audioClipUri";
+  
+     
+    private String getCanelAudioClipItemNameFromUdn(String udn) {
+        return "Sonos_" + udn + "_cancelAudioClip";
+    }
+
+    public String getUriItemNameFromUdn(String udn) {
+        return "Sonos_" + udn + "_audioClipUri";
     }
     
-    private String getVolumeItemNameFromIp(String ip) {
-        return "Sonos_" + ip.replaceAll("\\.", "") + "_volume";
+    private String getVolumeItemNameFromUdn(String udn) {
+        return "Sonos_" + udn + "_volume";
     }
     
     public String getIp() {
@@ -46,5 +56,17 @@ public class SonosDeviceInfo {
 
     public String getLabel() {
         return label;
+    }
+
+    public String getLastAudioClipId() {
+        return lastAudioClipId;
+    }
+
+    public void setLastAudioClipId(String lastAudioClipId) {
+        this.lastAudioClipId = lastAudioClipId;
+    }
+
+    public String getCancelAudioClipName() {
+        return cancelAudioClipName;
     }
 }

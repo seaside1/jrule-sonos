@@ -5,6 +5,8 @@ import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
@@ -13,9 +15,13 @@ import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.client.ClientUpgradeRequest;
 import org.eclipse.jetty.websocket.client.WebSocketClient;
+import org.openhab.automation.jrule.rules.user.SonosCoordinator;
+import org.openhab.automation.jrule.rules.user.SonosDeviceInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.helpers.MessageFormatter;
+
+import com.google.gson.Gson;
 
 /**
  * The {@link }
@@ -32,16 +38,17 @@ public class SonosWsClient implements PropertyChangeListener {
 
     private static final String JSON_X = "[{}, {}]";
     private static final String JSON_AUDIO = "[{\"namespace\": \"audioClip:1\", \"command\": \"loadAudioClip\", \"playerId\": \"{}\"}, {\"name\": \"Sonos Websocket\", \"appId\": \"org.openhab.jrule.sonos\", \"streamUrl\": \"{}\", \"volume\": {}}]";
-    private static final String JSON_CANCEL = "[{\"namespace\": \"audioClip:1\", \"command\": \"cancelAudioClip\", \"playerId\": \"{}\"}, {\"name\": \"Sonos Websocket\", \"appId\": \"org.openhab.jrule.sonos\", \"streamUrl\": \"{}\", \"volume\": {}}]";
-  //  {"id":"8","name":"song","appId":"myAppId","priority":"HIGH","clipType":"CUSTOM"}
+    private static final String JSON_CANCEL = "[{\"namespace\": \"audioClip:1\", \"command\": \"cancelAudioClip\", \"playerId\": \"{}\"}, {\"name\": \"Sonos Websocket\", \"appId\": \"org.openhab.jrule.sonos\", \"id\": \"{}\"}]";
     private static final int SUCCESS_STATUS_SWITCHING_PROTOCOL = 101;
     private static final long SLEEP_TIME = 10;
+    private static final int MIN_ID_LENGTH = 3;
 
     private final Logger logger = LoggerFactory.getLogger(SonosWsClient.class);
     private WebSocketClient client;
     private SonosWebSocket socket;
     private Future<Session> futureSession;
     private volatile boolean socketResponse = false;
+    private final Gson gson = new Gson();
 
     public SonosWsClient() {
         SslContextFactory factory = new SslContextFactory.Client(true);
@@ -117,6 +124,22 @@ public class SonosWsClient implements PropertyChangeListener {
         if (changeEvent.getPropertyName().equals(SonosWebSocket.PROPERTY_SOCKET_AUDIOCLIP_RESPONSE)) {
             logger.debug("Socket Audio Response");
             this.socketResponse = true;
+            final String onFrameRespone = (String) changeEvent.getNewValue();
+            logger.debug("PropChangeSupport Resp: {}", onFrameRespone);
+            final SonosAudioClipResponse[] response = gson.fromJson(onFrameRespone, SonosAudioClipResponse[].class);
+            final Optional<SonosAudioClipResponse> findAnyAudioClipId = Arrays.stream(response)
+                    .filter(r -> r.getId() != null && r.getId().length() > MIN_ID_LENGTH).findAny();
+            final Optional<SonosAudioClipResponse> findAnyPlayerId = Arrays.stream(response)
+                    .filter(r -> r.getPlayerId() != null && r.getPlayerId().length() > MIN_ID_LENGTH).findAny();
+
+            final String lastId = findAnyAudioClipId.isPresent() ? findAnyAudioClipId.get().getId() : null;
+            final String playerId = findAnyPlayerId.isPresent() ? findAnyPlayerId.get().getPlayerId() : null;
+            if (lastId != null && playerId != null) {
+                final SonosDeviceInfo deviceInfo = SonosCoordinator.get().getDeviceInfoFromUdn(playerId);
+                if (deviceInfo != null) {
+                    deviceInfo.setLastAudioClipId(lastId);
+                }
+            }
         }
     }
 
@@ -137,5 +160,30 @@ public class SonosWsClient implements PropertyChangeListener {
     private String createJson(String json, String udn, String uri, String volume) {
         return MessageFormatter.arrayFormat(json, new Object[] { udn, uri, volume }).getMessage();
 
+    }
+
+    private String createJson(String json, String udn, String lastAudioClipId) {
+        return MessageFormatter.arrayFormat(json, new Object[] { udn, lastAudioClipId}).getMessage();
+
+    }
+
+    
+    public void cancelAudioClip(String udn, String lastAudioClipId) {
+        if (lastAudioClipId == null) {
+            lastAudioClipId = SonosCoordinator.get().getDeviceInfoFromUdn(udn).getLastAudioClipId();
+        }
+        logger.debug("Cancelling audio clip for udn: {} clipId: {}", udn, lastAudioClipId);
+        socket.sendMessage(createJson(JSON_CANCEL, udn, lastAudioClipId));
+        int sleepTime = 0;
+        int maxSleepTime = 1000;
+        while (!socketResponse && sleepTime < maxSleepTime) {
+            try {
+                Thread.sleep(SLEEP_TIME);
+                sleepTime += SLEEP_TIME;
+            } catch (InterruptedException x) {
+                logger.error("Failed to wait for socket audio clip response", x);
+            }
+        }
+        
     }
 }

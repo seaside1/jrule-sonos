@@ -2,22 +2,30 @@ package org.openhab.automation.jrule.rules.user;
 
 import java.util.Hashtable;
 
+import org.openhab.automation.jrule.internal.engine.JRuleBuilder;
 import org.openhab.automation.jrule.internal.engine.JRuleEngine;
+import org.openhab.automation.jrule.internal.engine.JRuleInvocationCallback;
 import org.openhab.automation.jrule.internal.handler.JRuleItemHandler;
 import org.openhab.automation.jrule.internal.handler.JRuleThingHandler;
 import org.openhab.automation.jrule.internal.handler.JRuleTransformationHandler;
 import org.openhab.automation.jrule.internal.handler.JRuleVoiceHandler;
 import org.openhab.automation.jrule.rules.JRule;
+import org.openhab.automation.jrule.rules.JRuleMemberOf;
+import org.openhab.automation.jrule.rules.event.JRuleEvent;
+import org.openhab.automation.jrule.rules.event.JRuleItemEvent;
+import org.openhab.automation.jrule.rules.value.JRuleOnOffValue;
 import org.openhab.core.audio.AudioSink;
 import org.openhab.core.thing.Thing;
 
 public class SonosRuleModule extends JRule {
 
-    private static final int DEFAULT_VOLUME = 35;
-    private final SonosAudioClipRules sonosAudioClipRules;
-    
+    private static final Double DEFAULT_VOLUME = 35.0;
+    private final SonosAudioClipRule sonosAudioClipRule;
+    private final SonosCancelAudioClipRule sonosCancelAudioClipRule;
+
     public SonosRuleModule() {
-        sonosAudioClipRules = new SonosAudioClipRules();
+        sonosAudioClipRule = new SonosAudioClipRule();
+        sonosCancelAudioClipRule = new SonosCancelAudioClipRule();
         fetchSonosThingAttributes();
         registerItems();
         registerRules();
@@ -26,17 +34,27 @@ public class SonosRuleModule extends JRule {
 
     private void registerAudioSinks() {
         SonosCoordinator.get().getDeviceInfos().forEach(deviceInfo -> registerAudioSink(deviceInfo));
-   }
+    }
 
     private void registerAudioSink(SonosDeviceInfo deviceInfo) {
-        JRuleTransformationHandler.get().getBundleContext()
-        .registerService(AudioSink.class.getName(), new SonosAudioClipAudioSink(deviceInfo, JRuleVoiceHandler.get().getNetworkAddressService()), new Hashtable<>());
+        JRuleTransformationHandler.get().getBundleContext().registerService(AudioSink.class.getName(),
+                new SonosAudioClipAudioSink(deviceInfo, JRuleVoiceHandler.get().getNetworkAddressService()), new Hashtable<>());
         logInfo("Registering Sonos Audio sink for overlay: {} {}", deviceInfo.getAudioSinkName(), deviceInfo.getLabel());
     }
 
     private void registerRules() {
         logInfo("Registering Sonos Dynamic JRules");
-        JRuleEngine.get().createJRuleBuilder("SonosFireAudioClip", sonosAudioClipRules);
+        final JRuleBuilder builderAudioClip = JRuleEngine.get().createJRuleBuilder("SonosFireAudioClip", sonosAudioClipRule);
+        SonosCoordinator.get().getDeviceInfos().forEach(deviceInfo -> builderAudioClip
+                .whenItemReceivedCommand(deviceInfo.getUriItemName(), JRuleMemberOf.None, null, null));
+        builderAudioClip.build();
+
+        final JRuleBuilder builderCancelAudioClip = JRuleEngine.get().createJRuleBuilder("SonosCancelAudioClip",
+                sonosCancelAudioClipRule);
+        SonosCoordinator.get().getDeviceInfos().forEach(deviceInfo -> builderCancelAudioClip
+                .whenItemReceivedCommand(deviceInfo.getCancelAudioClipName(), JRuleMemberOf.None, null, null));
+        builderCancelAudioClip.build();
+
     }
 
     private void registerItems() {
@@ -50,6 +68,9 @@ public class SonosRuleModule extends JRule {
         }
         if (!jRuleItemHandler.itemRegistryContainsItem(deviceInfo.getVolumeItemName())) {
             jRuleItemHandler.addNumberItem(deviceInfo.getVolumeItemName(), DEFAULT_VOLUME);
+        }
+        if (!jRuleItemHandler.itemRegistryContainsItem(deviceInfo.getCancelAudioClipName())) {
+            jRuleItemHandler.addSwitchItem(deviceInfo.getCancelAudioClipName());
         }
     }
 
