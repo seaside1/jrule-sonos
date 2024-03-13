@@ -4,17 +4,20 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.openhab.automation.jrule.items.JRuleNumberItem;
 import org.openhab.automation.jrule.sonos.SonosWsClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SonosCoordinator {
+    private static final String UNDERSCORE="_";
+
+    private static final String SONOS = "Sonos_";
+
+    private final Logger logger = LoggerFactory.getLogger(SonosCoordinator.class);
 
     private static SonosCoordinator instance = null;
-    private static final String SONOS_ID_REGEX = "\\bSonos_([A-Z0-9_]+)\\b";
-    private static final Pattern SONOS_ID_PATTERN = Pattern.compile(SONOS_ID_REGEX);
    
     private Map<String, SonosDeviceInfo> udnToDeviceInfo = new HashMap<>();
     private final SonosWsClient sonosWsClient;
@@ -29,8 +32,9 @@ public class SonosCoordinator {
     }
 
     public  String extractSonosId(String itemName) {
-        Matcher matcher = SONOS_ID_PATTERN.matcher(itemName);    
-        return matcher.find() ? matcher.group(1) : null;
+        final int start = itemName.indexOf(SONOS) + SONOS.length();
+        final int end = itemName.lastIndexOf(UNDERSCORE);
+        return (start >= 0 && end >= 0 && end > start) ? itemName.substring(start, end) : null;
     }
     
     public static SonosCoordinator get() {
@@ -46,10 +50,19 @@ public class SonosCoordinator {
     }
     
     public String getIpFromItem(String itemName) {
-        return udnToDeviceInfo.get(extractSonosId(itemName)).getIp();
+        final SonosDeviceInfo sonosDeviceInfo = udnToDeviceInfo.get(extractSonosId(itemName));
+        if (sonosDeviceInfo == null) {       
+            logger.error("Failed to get sonosDeviceInfo for itemName: {} extracedId: {}", itemName, extractSonosId(itemName));
+        }
+        if (sonosDeviceInfo.getIp() == null || sonosDeviceInfo.getIp().length() < 2) {
+           logger.error("Failed to get Ip from sonosDevce Info itemName: {} deviceInfo: {}", itemName, sonosDeviceInfo);
+        }
+        return sonosDeviceInfo != null ? sonosDeviceInfo.getIp() : null; 
+                
     }
 
     public void addDeviInfo(SonosDeviceInfo deviceInfo) {
+        logger.debug("Adding deviceInfo: {}", deviceInfo);
         udnToDeviceInfo.put(deviceInfo.getUdn(), deviceInfo);
     }
 

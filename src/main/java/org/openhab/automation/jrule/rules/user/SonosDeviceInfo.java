@@ -2,7 +2,6 @@ package org.openhab.automation.jrule.rules.user;
 
 public class SonosDeviceInfo {
 
-    
     private static final String JSAS = "Jsas ";
     private final String ip;
     private final String uriItemName;
@@ -68,5 +67,12 @@ public class SonosDeviceInfo {
 
     public String getCancelAudioClipName() {
         return cancelAudioClipName;
+    }
+    
+    @Override
+    public String toString() {
+        return "SonosDeviceInfo [ip=" + ip + ", uriItemName=" + uriItemName + ", volumeItemName=" + volumeItemName
+                + ", cancelAudioClipName=" + cancelAudioClipName + ", udn=" + udn + ", label=" + label + ", lastAudioClipId="
+                + lastAudioClipId + "]";
     }
 }

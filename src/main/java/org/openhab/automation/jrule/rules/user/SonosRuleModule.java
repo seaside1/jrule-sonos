@@ -4,16 +4,12 @@ import java.util.Hashtable;
 
 import org.openhab.automation.jrule.internal.engine.JRuleBuilder;
 import org.openhab.automation.jrule.internal.engine.JRuleEngine;
-import org.openhab.automation.jrule.internal.engine.JRuleInvocationCallback;
 import org.openhab.automation.jrule.internal.handler.JRuleItemHandler;
 import org.openhab.automation.jrule.internal.handler.JRuleThingHandler;
 import org.openhab.automation.jrule.internal.handler.JRuleTransformationHandler;
 import org.openhab.automation.jrule.internal.handler.JRuleVoiceHandler;
 import org.openhab.automation.jrule.rules.JRule;
 import org.openhab.automation.jrule.rules.JRuleMemberOf;
-import org.openhab.automation.jrule.rules.event.JRuleEvent;
-import org.openhab.automation.jrule.rules.event.JRuleItemEvent;
-import org.openhab.automation.jrule.rules.value.JRuleOnOffValue;
 import org.openhab.core.audio.AudioSink;
 import org.openhab.core.thing.Thing;
 

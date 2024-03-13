@@ -1,5 +1,7 @@
 package org.openhab.automation.jrule.rules.user;
 
+import java.time.Duration;
+
 import org.openhab.automation.jrule.internal.engine.JRuleInvocationCallback;
 import org.openhab.automation.jrule.rules.JRule;
 import org.openhab.automation.jrule.rules.event.JRuleEvent;
@@ -10,9 +12,10 @@ public class SonosCancelAudioClipRule extends JRule implements JRuleInvocationCa
     @Override
     public void accept(JRuleEvent rawEvent) {
         final JRuleItemEvent event = (JRuleItemEvent) rawEvent;
-        if (event.getState() == JRuleOnOffValue.ON) {
-            logInfo("Executing cancelAudioClip event item: {}", event.getItem().getName());
+        if (event.getState() != JRuleOnOffValue.ON) {
+            return;
         }
+        logInfo("Executing cancelAudioClip event item: {}", event.getItem().getName());
         final SonosDeviceInfo deviceInfo = SonosCoordinator.get().getDeviceInfoFromItem(event.getItem().getName());
         final String ip = deviceInfo.getIp();
         if (ip == null) {
@@ -23,6 +26,9 @@ public class SonosCancelAudioClipRule extends JRule implements JRuleInvocationCa
         String lastAudioClipId = deviceInfo.getLastAudioClipId();
         logInfo("Sending Cancel Audio Clip ip: {} udn: {} id: {}", ip, udn, lastAudioClipId);
         SonosCoordinator.get().cancelLastAudioClip(ip, udn, lastAudioClipId);
+        createOrReplaceTimer(udn, Duration.ofSeconds(2), (Void) -> { // Lambda Expression
+            event.getItem().sendUncheckedCommand(JRuleOnOffValue.OFF);
+        });
     }
     @Override
     public String getRuleLogName() {

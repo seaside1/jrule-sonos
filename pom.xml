@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.openhab.automation.jrule.sonos</groupId>
@@ -28,93 +28,73 @@
             <scope>system</scope>
             <systemPath>${basedir}/jar/jrule.jar</systemPath>
         </dependency>
-           <dependency>
-    <groupId>com.google.code.gson</groupId>
-    <artifactId>gson</artifactId>
-    <version>2.9.1</version>
-    <scope>provided</scope>
-    </dependency>
         <dependency>
-
-      <version>1.2.9</version>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-core</artifactId>
-      <scope>test</scope>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <version>1.2.9</version>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-classic</artifactId>
-      <scope>test</scope>
-      <optional>true</optional>
-    </dependency>
-<!--dependency>
-    <groupId>org.eclipse.jetty.websocket</groupId>
-    <artifactId>websocket-client</artifactId>
-    <version>9.4.52.v20230823</version>
-    <scope>compile</scope>
-</dependency>
-<dependency>
-    <groupId>org.eclipse.jetty</groupId>
-    <artifactId>jetty-client</artifactId>
-    <version>9.4.52.v20230823</version>
-    <scope>compile</scope>
-</dependency>
-<dependency>
-    <groupId>org.eclipse.jetty</groupId>
-    <artifactId>jetty-util</artifactId>
-    <version>9.4.52.v20230823</version>
-    <scope>compile</scope>
-</dependency-->
-
-    <dependency>
-      <groupId>org.openhab.core.bom</groupId>
-      <artifactId>org.openhab.core.bom.compile</artifactId>
-      <type>pom</type>
-      <version>${ohc.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.openhab.core.bom</groupId>
-      <artifactId>org.openhab.core.bom.openhab-core</artifactId>
-      <version>${ohc.version}</version>
-      <type>pom</type>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.openhab.core.bom</groupId>
-      <artifactId>org.openhab.core.bom.runtime</artifactId>
-      <version>${ohc.version}</version>
-      <type>pom</type>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.openhab.core.bom</groupId>
-      <artifactId>org.openhab.core.bom.test</artifactId>
-      <version>${ohc.version}</version>
-      <type>pom</type>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.openhab.core.bom</groupId>
-      <artifactId>org.openhab.core.bom.compile-model</artifactId>
-      <version>${ohc.version}</version>
-      <type>pom</type>
-      <scope>provided</scope>
-    </dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.9.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <version>1.2.9</version>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <scope>test</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <version>1.2.9</version>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <scope>test</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.openhab.core.bom</groupId>
+            <artifactId>org.openhab.core.bom.compile</artifactId>
+            <type>pom</type>
+            <version>${ohc.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openhab.core.bom</groupId>
+            <artifactId>org.openhab.core.bom.openhab-core</artifactId>
+            <version>${ohc.version}</version>
+            <type>pom</type>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.openhab.core.bom</groupId>
+            <artifactId>org.openhab.core.bom.runtime</artifactId>
+            <version>${ohc.version}</version>
+            <type>pom</type>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.openhab.core.bom</groupId>
+            <artifactId>org.openhab.core.bom.test</artifactId>
+            <version>${ohc.version}</version>
+            <type>pom</type>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.openhab.core.bom</groupId>
+            <artifactId>org.openhab.core.bom.compile-model</artifactId>
+            <version>${ohc.version}</version>
+            <type>pom</type>
+            <scope>provided</scope>
+        </dependency>
 
     </dependencies>
 
     <build>
-  <resources>
-        <resource>
-            <filtering>false</filtering>
-            <directory>lib</directory>
-            <includes>
-                <include>*.jar</include>
-            </includes>
-        </resource>
-    </resources>
+        <resources>
+            <resource>
+                <filtering>false</filtering>
+                <directory>lib</directory>
+                <includes>
+                    <include>*.jar</include>
+                </includes>
+            </resource>
+        </resources>
 
         <plugins>
             <plugin>
@@ -136,7 +116,7 @@
             </plugin>
 
 
- <plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>1.6</version>
@@ -147,28 +127,31 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
- <filters>
-                    <filter>
-                        <artifact>*:*</artifact>
-                        <excludes>
-                            <exclude>META-INF/*.SF</exclude>
-                            <exclude>META-INF/*.DSA</exclude>
-                            <exclude>META-INF/*.RSA</exclude>
-                        </excludes>
-                    </filter>
-                </filters>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
                             <artifactSet>
                                 <includes>
-                                   <include>org.eclipse.jetty.websocket:websocket-client</include>
-                                   <include>org.eclipse.jetty.websocket:websocket-common</include>
-                                   <include>org.eclipse.jetty.websocket:websocket-api</include>
-                                   <include>org.eclipse.jetty:jetty-util</include>
-				   <include>org.eclipse.jetty:jetty-client</include>
-                                   <include>org.eclipse.jetty:jetty-io</include>
-                                   <include>org.eclipse.jetty:jetty-http</include>
-	                           <include>com.google.code.gson:gson</include>
-                               </includes>
-     
+                                    <include>
+                                        org.eclipse.jetty.websocket:websocket-client</include>
+                                    <include>
+                                        org.eclipse.jetty.websocket:websocket-common</include>
+                                    <include>
+                                        org.eclipse.jetty.websocket:websocket-api</include>
+                                    <include>org.eclipse.jetty:jetty-util</include>
+                                    <include>org.eclipse.jetty:jetty-client</include>
+                                    <include>org.eclipse.jetty:jetty-io</include>
+                                    <include>org.eclipse.jetty:jetty-http</include>
+                                    <include>com.google.code.gson:gson</include>
+                                </includes>
+
                             </artifactSet>
                         </configuration>
                     </execution>
@@ -177,10 +160,10 @@
         </plugins>
     </build>
     <repositories>
-      <repository>
-        <id>jitpack.io</id>
-        <url>https://jitpack.io</url>
-      </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
     </repositories>
 
 </project>
