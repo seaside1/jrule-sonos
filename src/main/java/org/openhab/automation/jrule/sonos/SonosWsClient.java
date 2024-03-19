@@ -155,6 +155,7 @@ public class SonosWsClient implements PropertyChangeListener {
                 logger.error("Failed to wait for socket audio clip response", x);
             }
         }
+        socketResponse = false;
     }
 
     private String createJson(String json, String udn, String uri, String volume) {
@@ -168,7 +169,7 @@ public class SonosWsClient implements PropertyChangeListener {
     }
 
     
-    public void cancelAudioClip(String udn, String lastAudioClipId) {
+    public synchronized void cancelAudioClip(String udn, String lastAudioClipId) {
         if (lastAudioClipId == null) {
             lastAudioClipId = SonosCoordinator.get().getDeviceInfoFromUdn(udn).getLastAudioClipId();
         }
@@ -184,6 +185,6 @@ public class SonosWsClient implements PropertyChangeListener {
                 logger.error("Failed to wait for socket audio clip response", x);
             }
         }
-        
+        socketResponse = false;
     }
 }
