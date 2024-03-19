@@ -5,6 +5,7 @@ public class SonosDeviceInfo {
     private static final String JSAS = "Jsas ";
     private final String ip;
     private final String uriItemName;
+    private final String ledItemName;
     private final String volumeItemName;
     private final String cancelAudioClipName;
     private final String udn;
@@ -16,19 +17,23 @@ public class SonosDeviceInfo {
         this.udn = udn;
         this.label = JSAS.concat(label);
         uriItemName = getUriItemNameFromUdn(udn);
+        ledItemName = getLedItemNameFromUdn(udn);
         volumeItemName = getVolumeItemNameFromUdn(udn);
         cancelAudioClipName = getCanelAudioClipItemNameFromUdn(udn);
     }
-    
-  
      
     private String getCanelAudioClipItemNameFromUdn(String udn) {
         return "Sonos_" + udn + "_cancelAudioClip";
     }
 
-    public String getUriItemNameFromUdn(String udn) {
+    private String getUriItemNameFromUdn(String udn) {
         return "Sonos_" + udn + "_audioClipUri";
     }
+
+    private String getLedItemNameFromUdn(String udn) {
+        return "Sonos_" + udn + "_Led";
+    }
+
     
     private String getVolumeItemNameFromUdn(String udn) {
         return "Sonos_" + udn + "_volume";
@@ -65,14 +70,18 @@ public class SonosDeviceInfo {
         this.lastAudioClipId = lastAudioClipId;
     }
 
+    public String getledItemName() {
+        return ledItemName;
+    }
+
     public String getCancelAudioClipName() {
         return cancelAudioClipName;
     }
     
     @Override
     public String toString() {
-        return "SonosDeviceInfo [ip=" + ip + ", uriItemName=" + uriItemName + ", volumeItemName=" + volumeItemName
-                + ", cancelAudioClipName=" + cancelAudioClipName + ", udn=" + udn + ", label=" + label + ", lastAudioClipId="
-                + lastAudioClipId + "]";
+        return "SonosDeviceInfo [ip=" + ip + ", uriItemName=" + uriItemName + ", ledItemName=" + ledItemName
+                + ", volumeItemName=" + volumeItemName + ", cancelAudioClipName=" + cancelAudioClipName + ", udn=" + udn
+                + ", label=" + label + ", lastAudioClipId=" + lastAudioClipId + "]";
     }
 }

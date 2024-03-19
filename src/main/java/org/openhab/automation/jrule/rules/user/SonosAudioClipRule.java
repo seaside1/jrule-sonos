@@ -6,6 +6,7 @@ import org.openhab.automation.jrule.rules.event.JRuleEvent;
 import org.openhab.automation.jrule.rules.event.JRuleItemEvent;
 
 public class SonosAudioClipRule extends JRule implements JRuleInvocationCallback {
+    
     @Override
     public void accept(JRuleEvent rawEvent) {
         final JRuleItemEvent event = (JRuleItemEvent) rawEvent;
@@ -20,8 +21,9 @@ public class SonosAudioClipRule extends JRule implements JRuleInvocationCallback
         String uri = event.getState().stringValue();
         String udn = deviceInfo.getUdn();
         final String volume = SonosCoordinator.get().getVolume(deviceInfo);
-        logInfo("Sending Play Clip ip: {} uri: {} udn: {} volume: {}", ip, uri, udn, volume);
-        SonosCoordinator.get().playAudioClip(deviceInfo, uri, volume);
+        final Boolean led = SonosCoordinator.get().getLed(deviceInfo);
+        logInfo("Sending Play Clip ip: {} uri: {} udn: {} volume: {} led: {}", ip, uri, udn, volume, led);
+        SonosCoordinator.get().playAudioClip(deviceInfo, uri, volume, led);
     }
 
     @Override

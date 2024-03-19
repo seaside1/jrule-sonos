@@ -38,7 +38,8 @@ public class SonosWsClient implements PropertyChangeListener {
 
     private static final String JSON_X = "[{}, {}]";
     private static final String JSON_AUDIO = "[{\"namespace\": \"audioClip:1\", \"command\": \"loadAudioClip\", \"playerId\": \"{}\"}, {\"name\": \"Sonos Websocket\", \"appId\": \"org.openhab.jrule.sonos\", \"streamUrl\": \"{}\", \"volume\": {}}]";
-    private static final String JSON_CANCEL = "[{\"namespace\": \"audioClip:1\", \"command\": \"cancelAudioClip\", \"playerId\": \"{}\"}, {\"name\": \"Sonos Websocket\", \"appId\": \"org.openhab.jrule.sonos\", \"id\": \"{}\"}]";
+    private static final String JSON_AUDIO_LED = "[{\"namespace\": \"audioClip:1\", \"command\": \"loadAudioClip\",  \"playerId\": \"{}\"}, {\"name\": \"Sonos Websocket\", \"appId\": \"org.openhab.jrule.sonos\", \"clipLEDBehavior\": \"WHITE_LED_QUICK_BREATHING\", \"streamUrl\": \"{}\", \"volume\": {}}]";
+       private static final String JSON_CANCEL = "[{\"namespace\": \"audioClip:1\", \"command\": \"cancelAudioClip\", \"playerId\": \"{}\"}, {\"name\": \"Sonos Websocket\", \"appId\": \"org.openhab.jrule.sonos\", \"id\": \"{}\"}]";
     private static final int SUCCESS_STATUS_SWITCHING_PROTOCOL = 101;
     private static final long SLEEP_TIME = 10;
     private static final int MIN_ID_LENGTH = 3;
@@ -143,8 +144,8 @@ public class SonosWsClient implements PropertyChangeListener {
         }
     }
 
-    public synchronized void sendAudioClip(String udn, String uri, String volume) {
-        socket.sendMessage(createJson(JSON_AUDIO, udn, uri, volume));
+    public synchronized void sendAudioClip(String udn, String uri, String volume, boolean led) {
+        socket.sendMessage(createJson(led ? JSON_AUDIO_LED : JSON_AUDIO, udn, uri, volume));
         int sleepTime = 0;
         int maxSleepTime = 1000;
         while (!socketResponse && sleepTime < maxSleepTime) {

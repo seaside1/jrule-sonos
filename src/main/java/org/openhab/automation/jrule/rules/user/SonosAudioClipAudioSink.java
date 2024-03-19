@@ -107,7 +107,7 @@ public class SonosAudioClipAudioSink extends AudioSinkSync {
             throws UnsupportedAudioFormatException, UnsupportedAudioStreamException {
         if (audioStream instanceof URLAudioStream urlAudioStream) {
             // it is an external URL, the speaker can access it itself and play it.
-            SonosCoordinator.get().playAudioClip(deviceInfo, urlAudioStream.getURL(), volume);
+            SonosCoordinator.get().playAudioClip(deviceInfo, urlAudioStream.getURL(), volume, null);
             try {
                 audioStream.close();
             } catch (IOException e) {
@@ -128,7 +128,7 @@ public class SonosAudioClipAudioSink extends AudioSinkSync {
             // stream.
             logger.trace("Stop currently playing stream.");
             // handler.stopPlaying(OnOffType.ON);
-            logger.warn("Stop not implemented yet");
+            SonosCoordinator.get().cancelLastAudioClip(deviceInfo);
             return;
         }
 
@@ -150,10 +150,10 @@ public class SonosAudioClipAudioSink extends AudioSinkSync {
         AudioFormat format = audioStream.getFormat();
         if (AudioFormat.WAV.isCompatible(format)) {
             SonosCoordinator.get().playAudioClip(deviceInfo,
-                    url + AudioStreamUtils.EXTENSION_SEPARATOR + FileAudioStream.WAV_EXTENSION, volume);
+                    url + AudioStreamUtils.EXTENSION_SEPARATOR + FileAudioStream.WAV_EXTENSION, volume, null);
         } else if (AudioFormat.MP3.isCompatible(format)) {
             SonosCoordinator.get().playAudioClip(deviceInfo,
-                    url + AudioStreamUtils.EXTENSION_SEPARATOR + FileAudioStream.MP3_EXTENSION, volume);
+                    url + AudioStreamUtils.EXTENSION_SEPARATOR + FileAudioStream.MP3_EXTENSION, volume, null);
         } else {
             throw new UnsupportedAudioFormatException("Sonos only supports MP3 or WAV.", format);
         }
@@ -179,4 +179,12 @@ public class SonosAudioClipAudioSink extends AudioSinkSync {
     public void setVolume(PercentType volume) {
         this.volume = "" + volume.longValue();
     }
+
+//    public OnOffType isLed() {
+//        return led == Boolean.TRUE ? OnOffType.ON : OnOffType.OFF;
+//    }
+//
+//    public void setLed(OnOffType led) {
+//        this.led = led == OnOffType.ON;
+//    }
 }

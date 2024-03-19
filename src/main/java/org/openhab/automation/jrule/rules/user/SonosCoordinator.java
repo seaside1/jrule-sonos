@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.openhab.automation.jrule.items.JRuleNumberItem;
+import org.openhab.automation.jrule.items.JRuleSwitchItem;
+import org.openhab.automation.jrule.rules.value.JRuleOnOffValue;
 import org.openhab.automation.jrule.sonos.SonosWsClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,24 +72,33 @@ public class SonosCoordinator {
         return udnToDeviceInfo.values().stream().map(d -> d.getUriItemName()).toList();
     }
 
-    public synchronized void playAudioClip(String ip, String uri, String udn, String volume) {
-        sonosWsClient.connect(ip);
-        sonosWsClient.sendAudioClip(udn, uri, volume);
-        sonosWsClient.disconnect();
-    }
-    
     public String getVolume(SonosDeviceInfo deviceInfo) {
         final JRuleNumberItem volumeItem = JRuleNumberItem.forName(deviceInfo.getVolumeItemName());
         final String volumeStateString = volumeItem != null && volumeItem.getState() != null ? volumeItem.getState().stringValue() : null;
-        return  volumeStateString == null || volumeStateString.isEmpty() ? DEFAULT_VOLUME : volumeStateString;
+        return volumeStateString == null || volumeStateString.isEmpty() ? DEFAULT_VOLUME : volumeStateString;
     }
-
-    public synchronized void playAudioClip(SonosDeviceInfo info, String uri, String volume) {
-        playAudioClip(info.getIp(), uri, info.getUdn(), volume == null ? getVolume(info) : volume);
-    }
-
     
-    public void cancelLastAudioClip(String sonosDeviceIp, String udn, String lastAudioClipId) {
+    public Boolean getLed(SonosDeviceInfo deviceInfo) {
+        final JRuleSwitchItem ledItem = JRuleSwitchItem.forName(deviceInfo.getledItemName());
+        final Boolean led=  ledItem != null && ledItem.getState() != null ? ledItem.getState() == JRuleOnOffValue.ON : Boolean.FALSE;
+        return led;
+    }
+    
+    public synchronized void playAudioClip(String ip, String uri, String udn, String volume, boolean led) {
+        sonosWsClient.connect(ip);
+        sonosWsClient.sendAudioClip(udn, uri, volume, led);
+        sonosWsClient.disconnect();
+    }
+    
+    public synchronized void playAudioClip(SonosDeviceInfo info, String uri, String volume, Boolean led) {
+        playAudioClip(info.getIp(), uri, info.getUdn(), volume == null ? getVolume(info) : volume, led == null ? getLed(info) : led);
+    }
+
+    public synchronized void cancelLastAudioClip(SonosDeviceInfo info) {
+        cancelLastAudioClip(info.getIp(), info.getUdn(), info.getLastAudioClipId());
+    }
+    
+    public synchronized void cancelLastAudioClip(String sonosDeviceIp, String udn, String lastAudioClipId) {
         sonosWsClient.connect(sonosDeviceIp);
         sonosWsClient.cancelAudioClip(udn, lastAudioClipId);
         sonosWsClient.disconnect(); 

@@ -17,10 +17,11 @@ public class SonosRuleModule extends JRule {
 
     private static final Double DEFAULT_VOLUME = 35.0;
     private final SonosAudioClipRule sonosAudioClipRule;
+    
     private final SonosCancelAudioClipRule sonosCancelAudioClipRule;
 
     public SonosRuleModule() {
-        sonosAudioClipRule = new SonosAudioClipRule();
+        sonosAudioClipRule = new SonosAudioClipRule();   
         sonosCancelAudioClipRule = new SonosCancelAudioClipRule();
         fetchSonosThingAttributes();
         registerItems();
@@ -44,7 +45,7 @@ public class SonosRuleModule extends JRule {
         SonosCoordinator.get().getDeviceInfos().forEach(deviceInfo -> builderAudioClip
                 .whenItemReceivedCommand(deviceInfo.getUriItemName(), JRuleMemberOf.None, null, null));
         builderAudioClip.build();
-
+        
         final JRuleBuilder builderCancelAudioClip = JRuleEngine.get().createJRuleBuilder("SonosCancelAudioClip",
                 sonosCancelAudioClipRule);
         SonosCoordinator.get().getDeviceInfos().forEach(deviceInfo -> builderCancelAudioClip
@@ -62,9 +63,12 @@ public class SonosRuleModule extends JRule {
         if (!jRuleItemHandler.itemRegistryContainsItem(deviceInfo.getUriItemName())) {
             jRuleItemHandler.addStringItem(deviceInfo.getUriItemName(), "");
         }
+        if (!jRuleItemHandler.itemRegistryContainsItem(deviceInfo.getledItemName())) {
+            jRuleItemHandler.addSwitchItem(deviceInfo.getledItemName(), Boolean.FALSE);
+        }
         if (!jRuleItemHandler.itemRegistryContainsItem(deviceInfo.getVolumeItemName())) {
             jRuleItemHandler.addNumberItem(deviceInfo.getVolumeItemName(), DEFAULT_VOLUME);
-        }
+        }       
         if (!jRuleItemHandler.itemRegistryContainsItem(deviceInfo.getCancelAudioClipName())) {
             jRuleItemHandler.addSwitchItem(deviceInfo.getCancelAudioClipName());
         }
