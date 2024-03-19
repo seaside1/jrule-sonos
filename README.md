@@ -10,18 +10,18 @@ Utilizing JRule for generating items and rules automatically.
 ## Pre-requisits
 - Sonos Speakers with the Sonos S2 firmware (S1 is not compatible with the Sonos AudioClip websocket api)
 - Sonos openHAB binding installed and set up https://www.openhab.org/addons/bindings/sonos/
-- JRule with Dynamic rules support BETA19 or later (https://github.com/seaside1/jrule/)
+- JRule with Dynamic rules support BETA21 or later (https://github.com/seaside1/jrule/)
 - Proper network setup: Static ip numbers for Sonos speakers or DHCP ip reservations. Able to connect to the Sonos Speakers on port 1443/tcp from the openHAB instance.
 
 ## Installation
-- Install JRule by using openHAB Marketplace or by copying Jrule-jar https://github.com/seaside1/jrule/releases/tag/jrule-4.x.x-BETA19 to your openHAB addons folder https://www.openhab.org/docs/configuration/addons.html#through-manually-provided-add-ons
+- Install JRule by using openHAB Marketplace or by copying Jrule-jar https://github.com/seaside1/jrule/releases/tag/jrule-4.x.x-BETA21 to your openHAB addons folder https://www.openhab.org/docs/configuration/addons.html#through-manually-provided-add-ons
 - Copy jrule-sonos.jar to $OPENHAB_BASE_DIR/conf/automation/jrule/rules-jar/
 
 ## Details
 This addon will search of all sonos things in openHAB. Once the things have been located the ip-number and udn (Unique Device Number) for that thing will be read.
-JRule will then create Two items per IP/UDN combo: An UriItem and a volumeItem.
-JRule will generate rules, which will trigger when an uri item is changed it will attempt to play that uri as a AudioClip on the local websocket using the volume item.
-JRule will also register audio sinks for all speakers. Enabling you to use openHAB "say()" and using the overlay functionality with the sonos speaker.
+JRule will then create three items per IP/UDN combo: An UriItem, a cancelItem, a volumeItem and a LedItem
+JRule will generate rules, which will trigger when an uri item is changed it will attempt to play that uri as a AudioClip on the local websocket using the volume item and LedItem (If led is on the Sonos speaker will start flashing when playing the audioClip)
+JRule will also register audio sinks for all speakers. Enabling you to use openHAB "say()" and using the overlay functionality with the sonos speaker. The audioSinks are also looking at the ledItem to determine if they should flash when playing the audioClip.
 
 ## Example
 These are generated from my system with speakers with Ip 10.0.40.xx
