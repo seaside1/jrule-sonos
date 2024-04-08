@@ -54,11 +54,11 @@ Command has been sent successfully.
 ```
 
 ```
-  say(message, "myvoiceId", "jsas:RINCON_C438XXXXXXXXXXXXXX", 60);
+  say(message, "myvoiceId", "jsas:RINCON_C438XXXXXXXXXXXXXX", 60);httphttps://github.com/seaside1/jrule-sonos.gits://github.com/seaside1/jrule-sonos.git
 ```
 
 
-# Karaf
+## Karaf
 ```
 openhab> openhab:audio sinks
   Sonos Move 2 (Move 2) (jsas:RINCON_XXXXXXXXXXXXXXXXXX)
@@ -67,3 +67,18 @@ openhab> openhab:audio sinks
   Web Audio (webaudio)
 openhab>
 ```
+
+
+## Changelog
+
+## 4.0.0-4
+ - Added option to flash led when playing notification
+ - Added Canel Audio Clip functionality 
+## 4.0.0-3
+ - Fixed label for audio sink in GUI
+ - Cleanup
+## 4.0.0-2
+ - Added audio sinks
+## 4.0.0-1
+ - Initial release
+
