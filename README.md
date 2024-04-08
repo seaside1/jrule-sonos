@@ -26,29 +26,31 @@ JRule will also register audio sinks for all speakers. Enabling you to use openH
 
 ## Example
 These are generated from my system with speakers with Ip 10.0.40.xx
+![Screenshot from 2024-04-08 21-49-53](https://github.com/seaside1/jrule-sonos/assets/24649305/48a157e3-c183-4f1f-aa83-2ea4035ee5d4)
 
-![Screenshot from 2023-10-08 21-34-35](https://github.com/seaside1/jrule-sonos/assets/24649305/42e29e7f-5c7f-4d83-8255-2eab249dc0f7)
-
-![Screenshot from 2023-10-08 21-33-29](https://github.com/seaside1/jrule-sonos/assets/24649305/161afbd7-d4e1-4f89-80cf-e17eaee12348)
+![Screenshot from 2024-04-08 21-52-11](https://github.com/seaside1/jrule-sonos/assets/24649305/3496dcf2-b0d7-4118-b4dd-5deec6b03683)
 
 
 
 ```
-openhab> openhab:send Sonos_1004068_audioClipUri https://freetestdata.com/wp-content/uploads/2021/09/Free_Test_Data_100KB_MP3.mp3                                                                                                             
+openhab> openhab:send Items
+
+Sonos_RINCON_000E5877C45801400_audioClipUri https://freetestdata.com/wp-content/uploads/2021/09/Free_Test_Data_100KB_MP3.mp3                                                                                                             
 Command has been sent successfully.
 ```
 
 ```
-2023-10-08 21:29:42.247 [INFO ] [openhab.automation.jrule.rules.JRule] - [SonosFireAudioClip] Executing fireAudioClip event item Sonos_1004068_audioClipUri value: https://freetestdata.com/wp-content/uploads/2021/09/Free_Test_Data_100KB_MP3.mp3
-2023-10-08 21:29:42.248 [INFO ] [openhab.automation.jrule.rules.JRule] - [SonosFireAudioClip] Sending Play Clip ip: 10.0.40.68 uri: https://freetestdata.com/wp-content/uploads/2021/09/Free_Test_Data_100KB_MP3.mp3 udn: RINCON_000E58F93C7401400 volume: 35
-2023-10-08 21:29:42.274 [INFO ] [utomation.jrule.sonos.SonosWebSocket] - Got connect: WebSocketSession[websocket=JettyAnnotatedEventDriver[org.openhab.automation.jrule.sonos.SonosWebSocket@2ddf1f8],behavior=CLIENT,connection=WebSocketClientConnection@195aeb7c::DecryptedEndPoint@126b11e2{l=/10.0.40.30:43584,r=/10.0.40.68:1443,OPEN,fill=-,flush=-,to=6/300000},remote=WebSocketRemoteEndpoint@34613f0c[batching=true],incoming=JettyAnnotatedEventDriver[org.openhab.automation.jrule.sonos.SonosWebSocket@2ddf1f8],outgoing=ExtensionStack[queueSize=0,extensions=[],incoming=org.eclipse.jetty.websocket.common.WebSocketSession,outgoing=org.eclipse.jetty.websocket.client.io.WebSocketClientConnection]]
-2023-10-08 21:29:42.274 [INFO ] [utomation.jrule.sonos.SonosWebSocket] - Connection status code: 101 reason: Switching Protocols
-2023-10-08 21:29:42.297 [INFO ] [utomation.jrule.sonos.SonosWebSocket] - Connection closed: 1000 - null
+2024-04-08 21:54:26.695 [INFO ] [openhab.automation.jrule.rules.JRule] - [SonosPlayAudioClip] Executing fireAudioClip event item Sonos_RINCON_949FXXXXXXX_audioClipUri value: https://freetestdata.com/wp-content/uploads/2021/09/Free_Test_Data_100KB_MP3.mp3
+2024-04-08 21:54:26.696 [INFO ] [openhab.automation.jrule.rules.JRule] - [SonosPlayAudioClip] Sending Play Clip ip: 10.0.40.69 uri: https://freetestdata.com/wp-content/uploads/2021/09/Free_Test_Data_100KB_MP3.mp3 udn: RINCON_949F3EC0234F01400 volume: 35 led: false
+2024-04-08 21:54:26.851 [INFO ] [utomation.jrule.sonos.SonosWebSocket] - Got connect: WebSocketSession[websocket=JettyAnnotatedEventDriver[org.openhab.automation.jrule.sonos.SonosWebSocket@6c3396d2],behavior=CLIENT,connection=WebSocketClientConnection@5e7dd118::DecryptedEndPoint@68a00add{l=/10.0.40.30:43344,r=/10.0.40.69:1443,OPEN,fill=-,flush=-,to=3/300000},remote=WebSocketRemoteEndpoint@69b7bd52[batching=true],incoming=JettyAnnotatedEventDriver[org.openhab.automation.jrule.sonos.SonosWebSocket@6c3396d2],outgoing=ExtensionStack[queueSize=0,extensions=[],incoming=org.eclipse.jetty.websocket.common.WebSocketSession,outgoing=org.eclipse.jetty.websocket.client.io.WebSocketClientConnection]]
+2024-04-08 21:54:26.852 [INFO ] [utomation.jrule.sonos.SonosWebSocket] - Connection status code: 101 reason: Switching Protocols
+2024-04-08 21:54:27.154 [INFO ] [utomation.jrule.sonos.SonosWebSocket] - Connection closed: 1000 - null
+2024-0
 ```
 
 ## Audio Sink
 ```
-2023-11-23 22:27:09.259 [INFO ] [openhab.automation.jrule.rules.JRule] - [SonosLan] Registering Sonos Audio sink for overlay: jsas:RINCON_C438XXXXXXXXXXXXXX Sonos Move 2 
+2024-03-26 16:44:08.159 [INFO ] [openhab.automation.jrule.rules.JRule] - [SonosLan] Registering Sonos Audio sink for overlay: jsas:RINCON_000XXXXXXXXX01400 Jsas Sonos Play:3 (MyRoom)
 ```
 
 ```
