@@ -54,7 +54,7 @@ Command has been sent successfully.
 ```
 
 ```
-  say(message, "myvoiceId", "jsas:RINCON_C438XXXXXXXXXXXXXX", 60);httphttps://github.com/seaside1/jrule-sonos.gits://github.com/seaside1/jrule-sonos.git
+  say(message, "myvoiceId", "jsas:RINCON_C438XXXXXXXXXXXXXX", 60);
 ```
 
 
