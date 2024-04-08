@@ -14,7 +14,8 @@ Utilizing JRule for generating items and rules automatically.
 - Proper network setup: Static ip numbers for Sonos speakers or DHCP ip reservations. Able to connect to the Sonos Speakers on port 1443/tcp from the openHAB instance.
 
 ## Installation
-- Install JRule by using openHAB Marketplace or by copying Jrule-jar https://github.com/seaside1/jrule/releases/tag/jrule-4.x.x-BETA21 to your openHAB addons folder https://www.openhab.org/docs/configuration/addons.html#through-manually-provided-add-ons
+- Install JRule by using openHAB Marketplace or by copying Jrule-jar https://github.com/seaside1/jrule/releases/download/jrule-4.0.0-BETA21/org.openhab.automation.jrule-4.0.0-BETA21.jar
+ to your openHAB addons folder https://www.openhab.org/docs/configuration/addons.html#through-manually-provided-add-ons
 - Copy jrule-sonos.jar to $OPENHAB_BASE_DIR/conf/automation/jrule/rules-jar/
 
 ## Details
